@@ -22,7 +22,7 @@ import { Clock } from 'react-feather'
 import { ProtocolsTable } from '../../components/LiquidationsPage/ProtocolsTable'
 import SEO from '~/components/SEO'
 import { assetIconUrl } from '~/utils'
-import { Panel, PanelSmol, PanelThicc, StyledAnchor } from '~/components'
+import { Panel, PanelThicc, StyledAnchor } from '~/components'
 import Image from 'next/image'
 import { TableSwitch } from '~/components/LiquidationsPage/TableSwitch'
 import { LIQS_SETTINGS, useLiqsManager } from '~/contexts/LocalStorage'
@@ -115,16 +115,6 @@ const LiquidationsHomePage: NextPage<{ data: ChartData; prevData: ChartData }> =
 						</Link>
 						ecosystem assets! Choose one from the asset picker dropdown menu!
 					</PanelThicc>
-					<PanelSmol as="p">
-						We are now tracking
-						<Link href={`/liquidations/sol`} passHref>
-							<StyledAnchor>
-								<Image src={`/asset-icons/sol.png`} width={24} height={24} alt={'SOL'} style={{ borderRadius: 12 }} />
-								<b>Solana</b>
-							</StyledAnchor>
-						</Link>
-						!
-					</PanelSmol>
 				</>
 			)}
 
