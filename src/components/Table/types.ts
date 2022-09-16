@@ -46,6 +46,8 @@ export type TColumns =
 	| 'fees'
 	| 'revenue'
 	| 'feesProtocol'
+	| 'chainsVolume'
+	| 'volumetvl'
 
 export interface INameProps {
 	type: 'chain' | 'protocol' | 'peggedAsset' | 'peggedAssetChain' | 'dex' | 'fees'
@@ -57,6 +59,10 @@ export interface INameProps {
 	showRows?: boolean
 }
 
+export interface INameFees extends INameProps{
+	version?: string
+}
+
 export interface INameYield extends Omit<INameProps, 'type'> {
 	project: string
 	projectslug: string
@@ -65,8 +71,7 @@ export interface INameYield extends Omit<INameProps, 'type'> {
 
 export interface INameYieldPoolProps {
 	value: string
-	poolId: string
-	project: string
+	configID: string
 	url: string
 	index?: number
 	bookmark?: boolean

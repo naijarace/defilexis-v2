@@ -1,6 +1,6 @@
 import IconsRow from '~/components/IconsRow'
 import QuestionHelper from '~/components/QuestionHelper'
-import { Name } from './Name'
+import { Name, NameFees } from './Name'
 import type { IColumnProps, TColumns } from './types'
 import { formattedNum, formattedPercent } from '~/utils'
 import { useDefiManager } from '~/contexts/LocalStorage'
@@ -58,12 +58,13 @@ export const allColumns: AllColumns = {
 		accessor: 'name',
 		disableSortBy: true,
 		Cell: ({ value, rowValues, rowIndex = null, rowType }) => (
-			<Name
-				type="fees"
+			<NameFees
+				type={rowValues.logo ? "fees" : "chain"}
 				value={value}
-				symbol={rowValues.symbol}
+				symbol={rowType === 'child' ? '-' : rowValues.symbol}
 				index={rowIndex !== null && rowIndex + 1}
 				rowType={rowType}
+				version={rowValues.version}
 			/>
 		)
 	},
@@ -140,7 +141,7 @@ export const allColumns: AllColumns = {
 
 				if (!extraTvlsEnabled['doublecounted'] && !extraTvlsEnabled['liquidstaking']) {
 					text =
-						'This protocol deposits into another protocol and is under Liquid Staking category, so it is subtracted from total TVL because both "Liquid Staking" and "Double Count" toggle is off'
+						'This protocol deposits into another protocol or is under Liquid Staking category, so it is subtracted from total TVL because both "Liquid Staking" and "Double Count" toggles are off'
 				}
 			}
 
@@ -192,8 +193,19 @@ export const allColumns: AllColumns = {
 		)
 	},
 	totalVolume24h: {
-		header: 'Last day volume',
+		header: '24h volume',
 		accessor: 'totalVolume24h',
 		Cell: ({ value }) => <>{value && formattedNum(value)}</>
-	}
+	},
+	chainsVolume: {
+		header: 'Chains',
+		accessor: 'chains',
+		disableSortBy: true,
+		Cell: ({ value }) => <IconsRow links={value} url="/chain" iconType="chain" disableLinks/>
+	},
+	volumetvl: {
+		header: 'Volume/TVL',
+		accessor: 'volumetvl',
+		Cell: ({ value }) => <>{value && formattedNum(value)}</>
+	},
 }

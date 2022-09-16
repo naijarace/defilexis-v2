@@ -20,11 +20,19 @@ export const TableWrapper = styled(Table)`
 			display: flex;
 		}
 
+		div > *:nth-child(-n + 3) {
+			display: none;
+		}
+
 		a {
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
 		}
+	}
+
+	tr > th:nth-child(2) {
+		padding-left: 48px !important;
 	}
 
 	// PROJECT
@@ -53,6 +61,9 @@ export const TableWrapper = styled(Table)`
 	// CHAINS
 	tr > *:nth-child(3) {
 		display: none;
+		& > * {
+			width: 24px;
+		}
 	}
 
 	// TVL
@@ -105,12 +116,26 @@ export const TableWrapper = styled(Table)`
 		// POOL
 		tr > *:nth-child(1) {
 			& > * {
-				width: 200px;
+				width: 100px;
 			}
+		}
+
+		tr > *:nth-child(2) {
+			display: revert;
 		}
 	}
 
 	@media screen and (min-width: ${({ theme }) => theme.bpSm}) {
+		// POOL
+		tr > *:nth-child(1) {
+			& > * {
+				width: 240px;
+			}
+
+			div > *:nth-child(-n + 3) {
+				display: block;
+			}
+		}
 		// PROJECT
 		tr > *:nth-child(2) {
 			display: revert;
@@ -167,6 +192,13 @@ export const TableWrapper = styled(Table)`
 		}
 	}
 
+	// CHAINS
+	@media screen and (min-width: 1160px) {
+		tr > *:nth-child(3) {
+			display: revert;
+		}
+	}
+
 	@media screen and (min-width: ${({ theme }) => theme.bpXl}) {
 		// PROJECT
 		tr > *:nth-child(2) {
@@ -215,13 +247,6 @@ export const TableWrapper = styled(Table)`
 			display: revert;
 		}
 	}
-
-	// CHAINS
-	@media screen and (min-width: 1680px) {
-		tr > *:nth-child(3) {
-			display: revert;
-		}
-	}
 `
 
 const TVL_PROJECT_TEXT = {
@@ -236,8 +261,7 @@ export const columns = [
 		Cell: ({ value, rowValues, rowIndex = null, rowType }) => (
 			<NameYieldPool
 				value={value}
-				poolId={rowValues.id}
-				project={rowValues.project}
+				configID={rowValues.configID}
 				url={rowValues.url ?? ''}
 				index={rowIndex !== null && rowIndex + 1}
 				bookmark
@@ -309,23 +333,15 @@ export const columns = [
 		helperText: 'Annualised percentage yield from incentives',
 		Cell: ({ value, rowValues }) => {
 			const rewards = rowValues.rewards ?? []
+
 			return (
 				<AutoRow sx={{ width: '100%', justifyContent: 'flex-end', gap: '4px' }}>
-					{rewards.includes('Optimism') || rewards.includes('Avalanche') ? (
-						<IconsRow
-							links={rewards}
-							url="/yields?chain"
-							iconType="chain"
-							yieldRewardsSymbols={rowValues.rewardTokensSymbols}
-						/>
-					) : (
-						<IconsRow
-							links={rewards}
-							url="/yields?project"
-							iconType="token"
-							yieldRewardsSymbols={rowValues.rewardTokensSymbols}
-						/>
-					)}
+					<IconsRow
+						links={rewards}
+						url="/yields?project"
+						iconType="token"
+						yieldRewardsSymbols={rowValues.rewardTokensSymbols}
+					/>
 					{formattedPercent(value, true)}
 				</AutoRow>
 			)
