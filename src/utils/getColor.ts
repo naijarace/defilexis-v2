@@ -9,7 +9,7 @@ export const getColor = async (protocol?: string, logo?: string | null) => {
 
 	try {
 		if (protocol) {
-			let path = `https://defilexis.com${tokenIconUrl(protocol)}`
+			let path = `https://defillama.com${tokenIconUrl(protocol)}`
 
 			if (!logo?.match(/\.svg$/)) {
 				path = logo
@@ -43,7 +43,7 @@ export async function getPeggedColor({ peggedAsset }) {
 
 	try {
 		if (peggedAsset) {
-			let path = `https://defilexis.com${peggedAssetIconUrl(peggedAsset)}`
+			let path = `https://defillama.com${peggedAssetIconUrl(peggedAsset)}`
 
 			if (path.match(/\.(jpg|jpeg|png)$/)) {
 				await Vibrant.from(path).getPalette((_err, palette) => {
