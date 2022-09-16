@@ -38,10 +38,9 @@ export const YIELD_POOLS_LAMBDA_API = 'https://yields.llama.fi/poolsEnriched'
 export const YIELD_CHART_API = 'https://yields.llama.fi/chart'
 export const YIELD_CONFIG_API = 'https://api.llama.fi/config/yields?a=1'
 export const YIELD_MEDIAN_API = 'https://yields.llama.fi/median'
-export const YIELD_URL_API = 'https://yields.llama.fi/urls'
+export const YIELD_URL_API = 'https://yields.llama.fi/url'
 export const YIELD_CHAIN_API = 'https://api.llama.fi/chains'
 
-export const LIQUIDATIONS_API = 'https://api.llama.fi/liquidations'
 export const LIQUIDATIONS_HISTORICAL_S3_PATH = DATASETS_S3_PATH + '/liqs'
 
 export const CHAINS_API = 'https://api.llama.fi/chains'
@@ -51,6 +50,8 @@ export const DEX_BASE_API = 'https://api.llama.fi/dex'
 
 export const USER_METRICS_PROTOCOL_API = 'https://6tklng2o7b.execute-api.eu-central-1.amazonaws.com/prod/stats'
 export const USER_METRICS_CHAIN_API = 'https://users.llama.fi/chain'
+export const USER_METRICS_CHAIN_API_BY_DATE = 'https://6tklng2o7b.execute-api.eu-central-1.amazonaws.com/prod/chain'
+export const USER_METRICS_ALL_API = 'https://users.llama.fi/all'
 
 export const CG_TOKEN_API =
 	'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=<PLACEHOLDER>'
