@@ -25,7 +25,7 @@ export async function getStaticPaths() {
 
 export default function Chain({ chain, ...props }) {
 	return (
-		<Layout title={`${chain} TVL - DefiLexis`}>
+		<Layout title={`${chain} TVL - DefiLlama`}>
 			<ChainPage {...props} selectedChain={chain} />
 		</Layout>
 	)

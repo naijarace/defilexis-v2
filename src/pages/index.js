@@ -13,7 +13,7 @@ export async function getStaticProps() {
 
 export default function HomePage(props) {
 	return (
-		<Layout title="DefiLexis - DeFi Dashboard">
+		<Layout title="DefiLlama - DeFi Dashboard">
 			<ChainPage {...props} />
 		</Layout>
 	)

@@ -21,7 +21,7 @@ export default function ApyHomePage(compressedProps) {
 	const b = new Uint8Array(Buffer.from(compressedProps.compressed, 'base64'))
 	const data = JSON.parse(pako.inflate(b, { to: 'string' }))
 	return (
-		<Layout title={`Yield Rankings - DefiLexis`} defaultSEO>
+		<Layout title={`Yield Rankings - DefiLlama`} defaultSEO>
 			<YieldPage {...data.props} />
 		</Layout>
 	)

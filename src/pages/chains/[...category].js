@@ -45,7 +45,7 @@ export async function getStaticPaths() {
 export default function Chains(props) {
 	const { category } = props
 	return (
-		<Layout title={`${category} TVL - DefiLexis`} defaultSEO>
+		<Layout title={`${category} TVL - DefiLlama`} defaultSEO>
 			<ChainsContainer {...props} />
 		</Layout>
 	)

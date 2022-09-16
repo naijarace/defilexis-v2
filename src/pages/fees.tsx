@@ -1,22 +1,6 @@
-import { RecentProtocols } from '~/components/RecentProtocols'
 import { revalidate } from '~/api'
-import Table, { columnsToShow, Dropdowns, TableFilters, TableHeader } from '~/components/Table'
+import Table, { columnsToShow } from '~/components/Table'
 import Layout from '~/layout'
-
-
-interface FeeItem {
-	id: string,
-	name: string,
-	symbol: string | null,
-	gecko_id: string | null,
-	cmcId: string | null,
-	adapterType: string,
-	adapterKey: string,
-	feesHistory: Array<any>,
-	revenueHistory: Array<any>,
-	total1dFees: number,
-	total1dRevenue: number
-}
 
 export async function getStaticProps() {
 	const feeResults = await fetch("https://fees.llama.fi/fees").then(r=>r.json())
@@ -37,7 +21,7 @@ export async function getStaticProps() {
 				for (const [version, value] of Object.entries(latestFee[chain])) {
 					if (!feeBreakdown[version]) {
 						feeBreakdown[version] = value as number
-					} else {	
+					} else {
 						feeBreakdown[version] += value as number
 					}
 				}
@@ -52,6 +36,7 @@ export async function getStaticProps() {
 			const subRows = Object.keys(feeBreakdown).map(version => {
 				return {
 					...fee,
+					version: version.toUpperCase(),
 					total1dFees: feeBreakdown[version],
 					total1dRevenue: revenueBreakdown[version],
 				}
@@ -75,13 +60,14 @@ export async function getStaticProps() {
 
 const columns = columnsToShow(
 	'feesProtocol',
+	'category',
 	'fees',
-  'revenue'
+  	'revenue'
 )
 
 export default function Fees(props) {
 	return (
-    	<Layout title={"Fees - DefiLexis"} defaultSEO>
+    	<Layout title={"Fees - DefiLlama"} defaultSEO>
 			<Table data={props.fees} columns={columns} />
 		</Layout>
 	)

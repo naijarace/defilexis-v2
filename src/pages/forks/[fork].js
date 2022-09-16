@@ -79,6 +79,20 @@ const PageView = ({ chartData, tokenLinks, token, filteredProtocols, parentToken
 			<ProtocolsChainsSearch step={{ category: 'Oracles', name: token, route: 'forks' }} />
 
 			<ChartAndValuesWrapper>
+				<BreakpointPanels>
+					<BreakpointPanel>
+						<h1>Total Value Locked (USD)</h1>
+						<p style={{ '--tile-text-color': '#4f8fea' }}>{tvl}</p>
+					</BreakpointPanel>
+					<BreakpointPanel>
+						<h2>Change (24h)</h2>
+						<p style={{ '--tile-text-color': '#fd3c99' }}> {percentChange || 0}%</p>
+					</BreakpointPanel>
+					<BreakpointPanel>
+						<h2>{topToken.name} Dominance</h2>
+						<p style={{ '--tile-text-color': '#46acb7' }}> {dominance}%</p>
+					</BreakpointPanel>
+				</BreakpointPanels>
 				<BreakpointPanel id="chartWrapper">
 					<Chart
 						display="liquidity"
@@ -101,7 +115,7 @@ const PageView = ({ chartData, tokenLinks, token, filteredProtocols, parentToken
 
 export default function Forks(props) {
 	return (
-		<Layout title={`Forks - DefiLexis`} defaultSEO>
+		<Layout title={`Forks - DefiLlama`} defaultSEO>
 			<PageView {...props} />
 		</Layout>
 	)

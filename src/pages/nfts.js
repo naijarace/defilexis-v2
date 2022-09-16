@@ -16,5 +16,5 @@ export async function getStaticProps() {
 }
 
 export default function NFTHomePage(props) {
-	return <NFTDashboardPage title="DefiLexis - NFT Dashboard" {...props} />
+	return <NFTDashboardPage title="DefiLlama - NFT Dashboard" {...props} />
 }

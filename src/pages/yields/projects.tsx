@@ -109,7 +109,7 @@ export default function Protocols(compressedProps) {
 	const b = new Uint8Array(Buffer.from(compressedProps.compressed, 'base64'))
 	const data = JSON.parse(pako.inflate(b, { to: 'string' }))
 	return (
-		<Layout title={`Projects - DefiLexis Yield`} defaultSEO>
+		<Layout title={`Projects - DefiLlama Yield`} defaultSEO>
 			<YieldsSearch step={{ category: 'Yields', name: 'All projects', hideOptions: true }} />
 			<PageHeader title="Projects" />
 			<Table data={data.props.projects} columns={columns} gap="40px" />

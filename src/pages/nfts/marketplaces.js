@@ -104,7 +104,7 @@ const MarketplacesView = ({ marketplaceData, currentData, marketplacesUnique, st
 
 function Marketplaces(props) {
 	return (
-		<Layout title="DefiLexis - NFT Dashboard">
+		<Layout title="DefiLlama - NFT Dashboard">
 			<SEO nftPage />
 			<MarketplacesView {...props} />
 		</Layout>

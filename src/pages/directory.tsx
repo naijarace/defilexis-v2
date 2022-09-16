@@ -36,7 +36,7 @@ export default function Protocols({ protocols }) {
 	}
 
 	return (
-		<Layout title={`Protocols Directory - DefiLexis`} defaultSEO>
+		<Layout title={`Protocols Directory - DefiLlama`} defaultSEO>
 			<Banner>
 				Search any protocol to go straight into their website, avoiding scam results from google. Bookmark this page for
 				better access and security

@@ -4,7 +4,7 @@ import { NextPage, GetStaticProps, GetStaticPaths } from 'next'
 import { revalidate } from '~/api'
 import {
 	ChartData,
-	DEFAULT_ASSETS_LIST,
+	getAvailableAssetsList,
 	getLatestChartData,
 	getPrevChartData,
 	getReadableValue
@@ -22,27 +22,31 @@ import { Clock } from 'react-feather'
 import { ProtocolsTable } from '../../components/LiquidationsPage/ProtocolsTable'
 import SEO from '~/components/SEO'
 import { assetIconUrl } from '~/utils'
-import { Panel } from '~/components'
+import { PanelSmol, PanelThicc, StyledAnchor } from '~/components'
 import Image from 'next/image'
 import { TableSwitch } from '~/components/LiquidationsPage/TableSwitch'
 import { LIQS_SETTINGS, useLiqsManager } from '~/contexts/LocalStorage'
 import { PositionsTable } from '~/components/LiquidationsPage/PositionsTable'
+import { ISearchItem } from '~/components/Search/types'
 
 export const getStaticProps: GetStaticProps<{ data: ChartData; prevData: ChartData }> = async ({ params }) => {
 	const symbol = (params.symbol as string).toLowerCase()
+	const { assets: options } = await getAvailableAssetsList()
 	const data = await getLatestChartData(symbol, 100)
 	const prevData = (await getPrevChartData(symbol, 100, 3600 * 24)) ?? data
 	return {
-		props: { data, prevData },
+		props: { data, prevData, options },
 		revalidate: revalidate(5)
 	}
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-	// TODO: make api for all tracked symbols
-	const paths = DEFAULT_ASSETS_LIST.map((x) => x.route.split('/').pop()).map((x) => ({
-		params: { symbol: x.toLowerCase() }
-	}))
+	const { assets } = await getAvailableAssetsList()
+	const paths = assets
+		.map((x) => x.route.split('/').pop())
+		.map((x) => ({
+			params: { symbol: x.toLowerCase() }
+		}))
 	return { paths, fallback: 'blocking' }
 }
 
@@ -67,30 +71,6 @@ const LiquidationsProvider = ({ children }) => {
 	)
 }
 
-const PanelThicc = styled(Panel)`
-	display: none;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	text-align: center;
-
-	@media (min-width: 80rem) {
-		display: flex;
-	}
-`
-
-const PanelSmol = styled(Panel)`
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	text-align: center;
-
-	@media (min-width: 80rem) {
-		display: none;
-	}
-`
-
 const ResponsiveHeader = styled(Header)`
 	text-align: center;
 	@media (min-width: 80rem) {
@@ -98,30 +78,13 @@ const ResponsiveHeader = styled(Header)`
 	}
 `
 
-const StyledAnchor = styled.a`
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	gap: 0.2rem;
-	margin-left: 0.2rem;
-	:hover {
-		text-decoration: underline;
-	}
-
-	@media (min-width: 80rem) {
-		margin-right: 0.2rem;
-	}
-`
-
-const LiquidationsHomePage: NextPage<{ data: ChartData; prevData: ChartData }> = (props) => {
-	const { data, prevData } = props
+const LiquidationsHomePage: NextPage<{ data: ChartData; prevData: ChartData; options: ISearchItem[] }> = (props) => {
+	const { data, prevData, options } = props
 	const [liqsSettings] = useLiqsManager()
 	const { LIQS_SHOWING_INSPECTOR } = LIQS_SETTINGS
 	const isLiqsShowingInspector = liqsSettings[LIQS_SHOWING_INSPECTOR]
 
-	const asset = DEFAULT_ASSETS_LIST.find((x) => x.symbol.toLowerCase() === data.symbol.toLowerCase())
-
-	const [minutesAgo, setMinutesAgo] = useState(Math.round((Date.now() - data.time * 1000) / 1000 / 60))
+	const [minutesAgo, setMinutesAgo] = useState(Math.round((Date.now() - data?.time * 1000) / 1000 / 60))
 	useEffect(() => {
 		const interval = setInterval(() => {
 			setMinutesAgo((x) => x + 1)
@@ -130,11 +93,11 @@ const LiquidationsHomePage: NextPage<{ data: ChartData; prevData: ChartData }> =
 	}, [])
 
 	return (
-		<Layout title={`${asset?.name} (${asset?.symbol}) Liquidation Levels - DefiLexis`}>
+		<Layout title={`${data.name} (${data.symbol}) Liquidation Levels - DefiLlama`}>
 			<SEO
 				liqsPage
-				cardName={`${asset?.name} (${asset?.symbol})`}
-				logo={'https://defilexis.com' + assetIconUrl(asset?.symbol, true)}
+				cardName={`${data.name} (${data.symbol})`}
+				logo={'https://defillama.com' + assetIconUrl(data.symbol.toLowerCase(), true)}
 				tvl={'$' + getReadableValue(data.totalLiquidable)}
 			/>
 
@@ -142,7 +105,7 @@ const LiquidationsHomePage: NextPage<{ data: ChartData; prevData: ChartData }> =
 				step={{ category: 'Home', name: `${data.symbol.toUpperCase()} Liquidation Levels`, hideOptions: true }}
 			/>
 
-			{!['SOL', 'MSOL', 'STSOL'].includes(data.symbol.toUpperCase()) && (
+			{!['BNB', 'CAKE', 'SXP', 'BETH', 'ADA'].includes(data.symbol.toUpperCase()) && (
 				<>
 					<PanelThicc as="p">
 						We are now tracking
@@ -168,7 +131,7 @@ const LiquidationsHomePage: NextPage<{ data: ChartData; prevData: ChartData }> =
 			)}
 
 			<ResponsiveHeader>Liquidation levels in DeFi 💦</ResponsiveHeader>
-			<LiquidationsHeader {...data} />
+			<LiquidationsHeader data={data} options={options} />
 			<LiquidationsProvider>
 				<LiquidationsContent data={data} prevData={prevData} />
 			</LiquidationsProvider>

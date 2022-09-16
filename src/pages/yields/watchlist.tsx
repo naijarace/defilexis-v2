@@ -21,7 +21,7 @@ export default function Portfolio(compressedProps) {
 	const b = new Uint8Array(Buffer.from(compressedProps.compressed, 'base64'))
 	const data = JSON.parse(pako.inflate(b, { to: 'string' }))
 	return (
-		<Layout title={`Saved Pools - DefiLexis`} defaultSEO>
+		<Layout title={`Saved Pools - DefiLlama`} defaultSEO>
 			<YieldsWatchlistContainer protocolsDict={data} />
 		</Layout>
 	)
