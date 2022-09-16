@@ -178,10 +178,10 @@ export default function BoxplotChart({ chartData }: IChartProps) {
 					},
 					selectedDataBackground: {
 						lineStyle: {
-							color: '#565a69'
+							color: '#445ed0'
 						},
 						areaStyle: {
-							color: '#565a69'
+							color: '#445ed0'
 						}
 					},
 					emphasis: {

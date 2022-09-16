@@ -64,7 +64,7 @@ export function useDefaults({ color, title, tooltipSort = true, valueSymbol = ''
 			}
 		}
 
-		const gridTop = !hideLegend && isSmall ? 48 : 0
+		const gridTop = hideLegend ? 0 : isSmall ? 60 : 10
 
 		const grid = {
 			left: 20,
@@ -83,20 +83,38 @@ export function useDefaults({ color, title, tooltipSort = true, valueSymbol = ''
 					day: 'numeric'
 				})
 
-				let vals = params
-					.sort((a, b) => (tooltipSort ? a.value[1] - b.value[1] : 0))
-					.reduce((prev, curr) => {
-						if (curr.value[1] !== 0 && curr.value[1] !== '-') {
-							return (prev +=
-								'<li style="list-style:none">' +
-								curr.marker +
-								curr.seriesName +
-								'&nbsp;&nbsp;' +
-								valueSymbol +
-								toK(curr.value[1]) +
-								'</li>')
-						} else return prev
-					}, '')
+				let vals
+				if (valueSymbol !== '%') {
+					vals = params
+						.sort((a, b) => (tooltipSort ? a.value[1] - b.value[1] : 0))
+						.reduce((prev, curr) => {
+							if (curr.value[1] !== 0 && curr.value[1] !== '-') {
+								return (prev +=
+									'<li style="list-style:none">' +
+									curr.marker +
+									curr.seriesName +
+									'&nbsp;&nbsp;' +
+									valueSymbol +
+									toK(curr.value[1]) +
+									'</li>')
+							} else return prev
+						}, '')
+				} else {
+					vals = params
+						.sort((a, b) => (tooltipSort ? a.value[1] - b.value[1] : 0))
+						.reduce((prev, curr) => {
+							if (curr.value[1] !== 0 && curr.value[1] !== '-') {
+								return (prev +=
+									'<li style="list-style:none">' +
+									curr.marker +
+									curr.seriesName +
+									'&nbsp;&nbsp;' +
+									curr.value[1] +
+									valueSymbol +
+									'</li>')
+							} else return prev
+						}, '')
+				}
 
 				const mcap = params.filter((param) => param.seriesName === 'Mcap')?.[0]?.value[1]
 				const tvl = params.filter((param) => param.seriesName === 'TVL')?.[0]?.value[1]
@@ -153,13 +171,19 @@ export function useDefaults({ color, title, tooltipSort = true, valueSymbol = ''
 					color: isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)',
 					opacity: 0.2
 				}
+			},
+			splitLine: {
+				lineStyle: {
+					color: '#a1a1aa',
+					opacity: 0.1
+				}
 			}
 		}
 
 		const yAxis = {
 			type: 'value',
 			axisLabel: {
-				formatter: (value) => valueSymbol + toK(value)
+				formatter: (value) => (valueSymbol === '%' ? value + valueSymbol : valueSymbol + toK(value))
 			},
 			axisLine: {
 				lineStyle: {
@@ -189,7 +213,8 @@ export function useDefaults({ color, title, tooltipSort = true, valueSymbol = ''
 				fontWeight: 400,
 				color: isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)'
 			},
-			top: !hideLegend && isSmall ? 30 : 0
+			top: !hideLegend && isSmall ? 30 : 0,
+			right: !hideLegend && isSmall ? null : 0
 		}
 
 		const dataZoom = [

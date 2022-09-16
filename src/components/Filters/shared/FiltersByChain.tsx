@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { useRouter } from 'next/router'
 import { MenuButtonArrow, useComboboxState, useSelectState } from 'ariakit'
 import { Checkbox } from '~/components'
@@ -94,14 +95,18 @@ export function FiltersByChain({ chainList = [], selectedChains, pathname }: IFi
 		)
 	}
 
+	const focusItemRef = useRef(null)
+
 	return (
 		<>
 			<SelectButton state={select}>
 				<span>Filter by Chain</span>
 				<MenuButtonArrow />
-				{selectedChains.length > 0 && <ItemsSelected>{selectedChains.length}</ItemsSelected>}
+				{selectedChains.length > 0 && selectedChains.length !== chainList.length && (
+					<ItemsSelected>{selectedChains.length}</ItemsSelected>
+				)}
 			</SelectButton>
-			<ComboboxSelectPopover state={select} modal={!isLarge} composite={false}>
+			<ComboboxSelectPopover state={select} modal={!isLarge} composite={false} initialFocusRef={focusItemRef}>
 				<Input state={combobox} placeholder="Search for chains..." autoFocus />
 
 				{combobox.matches.length > 0 ? (
@@ -113,7 +118,12 @@ export function FiltersByChain({ chainList = [], selectedChains, pathname }: IFi
 						</FilterFnsGroup>
 						<List state={combobox} className="filter-by-list">
 							{combobox.matches.map((value, i) => (
-								<SelectItem value={value} key={value + i} focusOnHover>
+								<SelectItem
+									value={value}
+									key={value + i}
+									ref={i === 1 && selectedChains.length === chainList.length ? focusItemRef : null}
+									focusOnHover
+								>
 									<span>{value}</span>
 									<Checkbox checked={select.value.includes(value) ? true : false} />
 								</SelectItem>

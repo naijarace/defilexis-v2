@@ -52,6 +52,6 @@ const Switch = styled.button<ISwitch>`
 	flex-wrap: nowrap;
 	padding: 6px;
 	border-radius: 6px;
-	background: ${({ active, theme }) => (active ? '#565a69' : theme.bg6)};
+	background: ${({ active, theme }) => (active ? '#445ed0' : theme.bg6)};
 	flex: 1;
 `

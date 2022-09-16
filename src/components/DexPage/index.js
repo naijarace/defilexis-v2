@@ -55,7 +55,7 @@ const columns = columnsToShow(
 function GlobalPage({ dex }) {
 	return (
 		<>
-			<SEO cardName={dex.name} chain={dex.name} tvl={dex.total1dVolume} volumeChange={volumeChange} />
+			<SEO cardName={dex.name} chain={dex.name} tvl={dex.total1dVolume} volumeChange={volumeChange} dexsPage />
 
 			<DexsSearch
 				step={{
@@ -65,10 +65,28 @@ function GlobalPage({ dex }) {
 			/>
 
 			<Panel as="p" style={{ textAlign: 'center', margin: '0', display: 'block' }}>
-				<span> DefiLexis TVL</span>
+				<span> We've launched a multi-chain stablecoin dashboard. Check it out</span>{' '}
+				<BasicLink style={{ textDecoration: 'underline' }} href="https://defillama.com/stablecoins">
+					here
+				</BasicLink>
+				<span>!</span>
 			</Panel>
 
 			<ChartAndValuesWrapper>
+				<BreakpointPanels>
+					<BreakpointPanel>
+						<h1>Total Value Locked (USD)</h1>
+						<p style={{ '--tile-text-color': '#4f8fea' }}>{tvl}</p>
+					</BreakpointPanel>
+					<PanelHiddenMobile>
+						<h2>Change (24h)</h2>
+						<p style={{ '--tile-text-color': '#fd3c99' }}> {percentChange || 0}%</p>
+					</PanelHiddenMobile>
+					<PanelHiddenMobile>
+						<h2>{topToken.name} Dominance</h2>
+						<p style={{ '--tile-text-color': '#46acb7' }}> {dominance}%</p>
+					</PanelHiddenMobile>
+				</BreakpointPanels>
 				<BreakpointPanel id="chartWrapper">
 					<RowFixed>
 						{DENOMINATIONS.map((option) => (

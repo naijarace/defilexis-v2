@@ -4,6 +4,7 @@ import { Checkbox } from '~/components'
 import { Input, List } from '~/components/Combobox'
 import { ComboboxSelectPopover, SelectItem, ItemsSelected, FilterFnsGroup, SelectButton } from '../shared'
 import { useSetPopoverStyles } from '~/components/Popover/utils'
+import { useRef } from 'react'
 
 interface IYieldProjectsProps {
 	projectList: { name: string; slug: string }[]
@@ -79,12 +80,16 @@ export function YieldProjects({ projectList = [], selectedProjects, pathname }: 
 		)
 	}
 
+	const focusItemRef = useRef(null)
+
 	return (
 		<>
 			<SelectButton state={select}>
 				<span>Filter by Project</span>
 				<MenuButtonArrow />
-				{selectedProjects.length > 0 && <ItemsSelected>{selectedProjects.length}</ItemsSelected>}
+				{selectedProjects.length > 0 && selectedProjects.length !== projectList.length && (
+					<ItemsSelected>{selectedProjects.length}</ItemsSelected>
+				)}
 			</SelectButton>
 			<ComboboxSelectPopover state={select} modal={!isLarge} composite={false}>
 				<Input state={combobox} placeholder="Search for projects..." autoFocus />
@@ -98,7 +103,12 @@ export function YieldProjects({ projectList = [], selectedProjects, pathname }: 
 						</FilterFnsGroup>
 						<List state={combobox} className="filter-by-list">
 							{combobox.matches.map((value, i) => (
-								<SelectItem value={value} key={value + i} focusOnHover>
+								<SelectItem
+									value={value}
+									key={value + i}
+									ref={i === 1 && selectedProjects.length === projectList.length ? focusItemRef : null}
+									focusOnHover
+								>
 									<span>{projectList.find((p) => p.slug === value)?.name ?? value}</span>
 									<Checkbox checked={select.value.includes(value) ? true : false} />
 								</SelectItem>

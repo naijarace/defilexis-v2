@@ -11,7 +11,10 @@ import {
 	PanelHiddenMobile,
 	ChartAndValuesWrapper,
 	DownloadButton,
-	DownloadIcon
+	DownloadIcon,
+	PanelThicc,
+	PanelSmol,
+	StyledAnchor
 } from '~/components'
 import { RowFixed } from '~/components/Row'
 import { ProtocolsChainsSearch } from '~/components/Search'
@@ -28,6 +31,8 @@ import { chainCoingeckoIds } from '~/constants/chainTokens'
 import { useDenominationPriceHistory } from '~/api/categories/protocols/client'
 import llamaLogo from '~/assets/peeking-llama.png'
 import { ListHeader, ListOptions } from './shared'
+import Link from 'next/link'
+import { BarChart } from 'react-feather'
 
 const EasterLlama = styled.button`
 	padding: 0;
@@ -238,11 +243,53 @@ function GlobalPage({
 				}}
 			/>
 
-			<Panel as="p" style={{ textAlign: 'center', margin: '0', display: 'block' }}>
-				<span>Welcome to DefiLexis; Best Total Value Lock Aggregator</span>
-			</Panel>
+			<>
+				<PanelThicc as="p">
+					We just launched our new
+					<Link href={`/dexs`} passHref>
+						<StyledAnchor>
+							<BarChart size={18} />
+							<b>DEX volume dashboard</b>
+						</StyledAnchor>
+					</Link>
+					! Check it out now!
+				</PanelThicc>
+				<PanelSmol as="p">
+					Check out our new
+					<Link href={`/dexs`} passHref>
+						<StyledAnchor>
+							<BarChart size={18} />
+							<b>DEX dashboard</b>
+						</StyledAnchor>
+					</Link>
+					!
+				</PanelSmol>
+			</>
 
 			<ChartAndValuesWrapper>
+				<BreakpointPanels>
+					<BreakpointPanel>
+						<h1>Total Value Locked (USD)</h1>
+						<p style={{ '--tile-text-color': '#4f8fea' }}>{tvl}</p>
+						<DownloadButton
+							href={`https://api.llama.fi/simpleChainDataset/${selectedChain}?${Object.entries(extraTvlsEnabled)
+								.filter((t) => t[1] === true)
+								.map((t) => `${t[0]}=true`)
+								.join('&')}`}
+						>
+							<DownloadIcon />
+							<span>&nbsp;&nbsp;.csv</span>
+						</DownloadButton>
+					</BreakpointPanel>
+					<PanelHiddenMobile>
+						<h2>Change (24h)</h2>
+						<p style={{ '--tile-text-color': '#fd3c99' }}> {percentChange || 0}%</p>
+					</PanelHiddenMobile>
+					<PanelHiddenMobile>
+						<h2>{topToken.name} Dominance</h2>
+						<p style={{ '--tile-text-color': '#46acb7' }}> {dominance}%</p>
+					</PanelHiddenMobile>
+				</BreakpointPanels>
 				<BreakpointPanel id="chartWrapper">
 					<RowFixed>
 						{DENOMINATIONS.map((option) => (
@@ -270,10 +317,13 @@ function GlobalPage({
 						/>
 					)}
 				</BreakpointPanel>
+				<EasterLlama onClick={activateEasterEgg}>
+					<Image src={llamaLogo} width="41px" height="34px" alt="Activate Easter Egg" />
+				</EasterLlama>
 			</ChartAndValuesWrapper>
 
 			<ListOptions>
-				<ListHeader>Top Rankings</ListHeader>
+				<ListHeader>TVL Rankings</ListHeader>
 				<RowLinksWithDropdown links={chainOptions} activeLink={selectedChain} />
 				<TVLRange />
 			</ListOptions>

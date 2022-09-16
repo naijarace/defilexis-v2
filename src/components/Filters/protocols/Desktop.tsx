@@ -56,7 +56,7 @@ export const DesktopProtocolFilters = ({ options, ...props }) => {
 
 	return (
 		<Wrapper>
-			<label>CHECK TO INCLUDE IN TVL:</label>
+			<label>INCLUDE IN TVL:</label>
 			<ListWrapper {...props}>
 				{tvlOptions.length > 3 ? (
 					<>

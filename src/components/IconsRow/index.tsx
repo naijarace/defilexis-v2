@@ -53,12 +53,20 @@ const StyledTooltip = styled(Tooltip)`
 	padding: 6px;
 `
 
-export const ChainLogo = ({ chain, url, iconType, yieldRewardsSymbol }) => {
+interface IChainLogo {
+	chain: string
+	url: string
+	iconType:string
+	yieldRewardsSymbol: string
+	disableLink?: boolean
+}
+
+export const ChainLogo = ({ chain, url, iconType, yieldRewardsSymbol, disableLink: disableLinks = false }: IChainLogo) => {
 	const shallowRoute: boolean = url.includes('/yields?chain') || url.includes('/yields?project')
-	if (yieldRewardsSymbol) {
+	if (yieldRewardsSymbol || disableLinks) {
 		return (
-			<StyledTooltip content={yieldRewardsSymbol}>
-				<TokenLogo address={chain} logo={iconType === 'token' ? tokenIconUrl(chain) : chainIconUrl(chain)} />
+			<StyledTooltip content={disableLinks ? chain : yieldRewardsSymbol}>
+				<TokenLogo onClick={ e=> e.stopPropagation() } address={chain} logo={iconType === 'token' ? tokenIconUrl(chain) : chainIconUrl(chain)} />
 			</StyledTooltip>
 		)
 	} else {
@@ -87,9 +95,15 @@ interface IIconsRowProps {
 	url: string
 	iconType: 'token' | 'chain'
 	yieldRewardsSymbols?: string[]
+	disableLinks?: boolean
 }
 
-const IconsRow = ({ links, url, iconType, yieldRewardsSymbols = [] }: IIconsRowProps) => {
+const isChain = (chain) => {
+	return ['Ethereum', 'Avalanche', 'Optimism', 'Near', 'Metis', 'Aurora'].includes(chain)
+}
+
+// todo update links prop to {name: string, iconType: string}
+const IconsRow = ({ links, url, iconType, yieldRewardsSymbols = [], disableLinks=false }: IIconsRowProps) => {
 	const [visibleChainIndex, setVisibileChainIndex] = useState(0)
 	const mainWrapEl = useRef(null)
 	const { width: mainWrapWidth } = useResize(mainWrapEl)
@@ -122,9 +136,10 @@ const IconsRow = ({ links, url, iconType, yieldRewardsSymbols = [] }: IIconsRowP
 				<ChainLogo
 					key={chain}
 					chain={chain}
-					url={url}
-					iconType={iconType}
+					url={url === '/yields?project' ? (isChain(chain) ? '/yields?chain' : url) : url}
+					iconType={isChain(chain) ? 'chain' : iconType}
 					yieldRewardsSymbol={yieldRewardsSymbols[i]}
+					disableLink={disableLinks}
 				/>
 			))}
 			{!!hoverChains.length && (

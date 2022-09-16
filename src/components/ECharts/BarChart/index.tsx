@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import * as echarts from 'echarts/core'
 import { v4 as uuid } from 'uuid'
-import { stringToColour } from '../utils'
+import { getUtcDateObject, stringToColour } from '../utils'
 import type { IBarChartProps } from '../types'
 import { SelectLegendMultiple } from '../shared'
 import { useDefaults } from '../useDefaults'
@@ -9,6 +9,7 @@ import { useDefaults } from '../useDefaults'
 export default function BarChart({
 	chartData,
 	stacks,
+	seriesConfig,
 	valueSymbol = '',
 	title,
 	color,
@@ -63,7 +64,7 @@ export default function BarChart({
 			}
 
 			chartData.forEach(([date, value]) => {
-				series.data.push([new Date(date * 1000), value])
+				series.data.push([getUtcDateObject(date), value])
 			})
 
 			return series
@@ -72,6 +73,7 @@ export default function BarChart({
 				return {
 					name: stack,
 					type: 'bar',
+
 					stack: defaultStacks[stack],
 					...(barWidths?.[defaultStacks[stack]] && { barMaxWidth: barWidths[defaultStacks[stack]] }),
 					emphasis: {
@@ -81,6 +83,7 @@ export default function BarChart({
 					itemStyle: {
 						color
 					},
+					...(seriesConfig?.[defaultStacks[stack]] && seriesConfig?.[defaultStacks[stack]]),
 					data: []
 				}
 			})
@@ -88,14 +91,14 @@ export default function BarChart({
 			chartData.forEach(({ date, ...item }) => {
 				stackKeys.forEach((stack) => {
 					if (legendOptions && customLegendName ? legendOptions.includes(stack) : true) {
-						series.find((t) => t.name === stack)?.data.push([new Date(date * 1000), item[stack] || 0])
+						series.find((t) => t.name === stack)?.data.push([getUtcDateObject(date), item[stack] || 0])
 					}
 				})
 			})
 
 			return series
 		}
-	}, [barWidths, chartData, color, customLegendName, defaultStacks, legendOptions, stackKeys])
+	}, [barWidths, chartData, color, customLegendName, defaultStacks, legendOptions, stackKeys, seriesConfig])
 
 	const createInstance = useCallback(() => {
 		const instance = echarts.getInstanceByDom(document.getElementById(id))
