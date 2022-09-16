@@ -21,7 +21,8 @@ import {
 	ShoppingCart,
 	TrendingUp,
 	Compass,
-	Droplet
+	Droplet,
+	BarChart
 } from 'react-feather'
 import { PaperIcon } from './shared'
 
@@ -57,30 +58,49 @@ export const navLinks: ILinks = {
 		main: [
 			{ name: 'Yields', path: '/yields', icon: Percent, subMenuHeader: true },
 			{ name: 'Stablecoins', path: '/stablecoins/chains', icon: DollarSign, subMenuHeader: true },
+			{ name: 'DEXs', path: '/dexs', icon: BarChart, subMenuHeader: true },
+			{ name: 'Overview', path: '/', icon: TrendingUp, hideOnMobile: true },
 			{ name: 'Chains', path: '/chains', icon: Link },
-			{ name: 'Directory', path: '/directory', icon: Compass },
-			{ name: 'Liquidations', path: '/liquidations/eth', icon: Droplet },
+			{ name: 'Directory', path: '/directory', icon: Compass, newTag: true },
+			{ name: 'Liquidations', path: '/liquidations/eth', icon: Droplet, newTag: true },
 			{ name: 'Roundup', path: '/roundup', icon: PaperIcon },
+			{ name: 'Wiki', path: 'https://wiki.defillama.com/wiki/Main_Page', icon: Book },
 			{ name: 'Airdrops', path: '/airdrops', icon: CloudDrizzle },
 			{ name: 'Oracles', path: '/oracles', icon: Shield },
 			{ name: 'Forks', path: '/forks', icon: Share2 },
 			{ name: 'Watchlist', path: '/watchlist', icon: Bookmark },
 			{ name: 'Top Protocols', path: '/top-protocols', icon: Map },
 			{ name: 'Categories', path: '/categories', icon: RefreshCcw },
-			{ name: 'Recent Listing', path: '/recent', icon: Clock },
+			{ name: 'Recent', path: '/recent', icon: Clock },
 			{ name: 'Languages', path: '/languages', icon: Code },
 			{ name: 'About', path: '/about', icon: HelpCircle },
-			{ name: 'List Your Project', path: 'https://docs.llama.fi/list-your-project/submit-a-project', icon: PaperIcon },
-			{
-				name: 'Donate',
-				path: 'https://etherscan.io/address/0x48dC010162095E122abAa420Ff5DD94f93115FaD',
-				icon: DollarSign
-			}
 		],
 		footer: [
 			{
 				name: 'Twitter',
-				path: 'https://twitter.com/DefiLexis',
+				path: 'https://twitter.com/DefiLlama',
+				external: true
+			},
+			{
+				name: 'Discord',
+				path: 'https://discord.gg/buPFYXzDDd',
+				external: true
+			},
+			{
+				name: 'Donate',
+				path: '/donations'
+			},
+			{
+				name: 'Press / Media',
+				path: '/press'
+			},
+			{
+				name: 'API Docs',
+				path: '/docs/api'
+			},
+			{
+				name: 'List Your Project',
+				path: 'https://docs.llama.fi/list-your-project/submit-a-project',
 				external: true
 			},
 			{
@@ -93,12 +113,13 @@ export const navLinks: ILinks = {
 		main: [
 			{ name: 'DeFi', path: '/', icon: BarChart2, subMenuHeader: true, hideOnMobile: true },
 			{ name: 'Stablecoins', path: '/stablecoins/chains', icon: DollarSign, subMenuHeader: true, hideOnMobile: true },
+			{ name: 'DEXs', path: '/dexs', icon: BarChart, subMenuHeader: true, hideOnMobile: true },
 			{ name: 'Overview', path: '/yields/overview', icon: PieChart },
 			{ name: 'Pools', path: '/yields', icon: TrendingUp },
 			{ name: 'Stablecoin Pools', path: '/yields/stablecoins', icon: Pocket },
 			{ name: 'Projects', path: '/yields/projects', icon: List },
 			{ name: 'Watchlist', path: '/yields/watchlist', icon: Bookmark },
-			{ name: 'List your protocol', path: 'https://github.com/DefiLexis/yield-server#readme', icon: PlusCircle }
+			{ name: 'List your protocol', path: 'https://github.com/DefiLlama/yield-server#readme', icon: PlusCircle }
 		],
 		footer: [
 			{
@@ -116,6 +137,7 @@ export const navLinks: ILinks = {
 		main: [
 			{ name: 'DeFi', path: '/', icon: BarChart2, subMenuHeader: true, hideOnMobile: true },
 			{ name: 'Yields', path: '/yields', icon: Percent, subMenuHeader: true, hideOnMobile: true },
+			{ name: 'DEXs', path: '/dexs', icon: BarChart, subMenuHeader: true, hideOnMobile: true },
 			{ name: 'Overview', path: '/stablecoins', icon: PieChart },
 			{ name: 'Chains', path: '/stablecoins/chains', icon: Link }
 		],

@@ -9,8 +9,8 @@ import { AreaChart } from '~/components/Charts'
 import { GroupStablecoins } from '~/components/MultiSelect'
 import { PeggedSearch } from '~/components/Search'
 import { ChartSelector } from '~/components/PeggedPage/.'
-import { useCalcCirculating, useCalcGroupExtraPeggedByDay, useGroupChainsPegged } from '~/hooks/data'
-import { buildPeggedChartData } from '~/utils/stablecoins'
+import { useCalcCirculating, useCalcGroupExtraPeggedByDay, useGroupChainsPegged } from '~/hooks/data/stablecoins'
+import { useBuildPeggedChartData } from '~/utils/stablecoins'
 import { useXl, useMed } from '~/hooks/useBreakpoints'
 import {
 	getRandomColor,
@@ -251,13 +251,13 @@ function PeggedChainsOverview({
 	chainTVLData
 }) {
 	const [chartType, setChartType] = useState('Pie')
-	const chartTypeList = ['Total Market Cap', 'Pie', 'Dominance', 'Chain Market Caps']
+	const chartTypeList = ['Total Market Cap', 'Chain Market Caps', 'Pie', 'Dominance']
 
 	const belowMed = useMed()
 	const belowXl = useXl()
 	const aspect = belowXl ? (belowMed ? 1 : 60 / 42) : 60 / 22
 
-	const [peggedAreaChartData, peggedAreaTotalData, stackedDataset] = buildPeggedChartData(
+	const { peggedAreaChartData, peggedAreaTotalData, stackedDataset } = useBuildPeggedChartData(
 		peggedChartDataByChain,
 		chainList,
 		[...Array(chainList.length).keys()],
@@ -367,15 +367,12 @@ function PeggedChainsOverview({
 						<p style={{ '--tile-text-color': '#46acb7' } as React.CSSProperties}> {dominance}%</p>
 					</BreakpointPanel>
 				</BreakpointPanels>
-				<BreakpointPanel id="chartWrapper">
-					<RowBetween mb={useMed ? 40 : 0} align="flex-start">
-						<AutoRow style={{ width: 'fit-content' }} justify="flex-end" gap="6px" align="flex-start">
-							<ChartSelector options={chartTypeList} selectedChart={chartType} onClick={setChartType} />
-						</AutoRow>
-					</RowBetween>
+				<BreakpointPanel id="chartWrapper" style={{ gap: '16px', minHeight: '450px', justifyContent: 'space-between' }}>
+					<ChartSelector options={chartTypeList} selectedChart={chartType} onClick={setChartType} />
+
 					{chartType === 'Total Market Cap' && (
 						<PeggedAreaChart
-							title={`Total ${title}`}
+							title=""
 							chartData={peggedAreaTotalData}
 							stacks={totalMcapLabel}
 							color={'lightcoral'}

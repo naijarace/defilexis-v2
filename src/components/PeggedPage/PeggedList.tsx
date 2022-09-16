@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import dynamic from 'next/dynamic'
 import { BreakpointPanel, BreakpointPanels, ChartAndValuesWrapper, DownloadButton, DownloadIcon } from '~/components'
-import { RowBetween, AutoRow } from '~/components/Row'
+import { AutoRow } from '~/components/Row'
 import Table, { columnsToShow } from '~/components/Table'
 import { PeggedChainResponsivePie, PeggedChainResponsiveDominance, AreaChart } from '~/components/Charts'
 import { RowLinksWithDropdown, RowLinksWrapper } from '~/components/Filters'
@@ -13,8 +13,12 @@ import { PeggedSearch } from '~/components/Search'
 import QuestionHelper from '~/components/QuestionHelper'
 import { ChartSelector } from '~/components/PeggedPage/.'
 import { Text } from 'rebass'
-import { useCalcCirculating, useCalcGroupExtraPeggedByDay } from '~/hooks/data'
-import { buildPeggedChartData } from '~/utils/stablecoins'
+import {
+	useCalcCirculating,
+	useCalcGroupExtraPeggedByDay,
+	useFormatStablecoinQueryParams
+} from '~/hooks/data/stablecoins'
+import { useBuildPeggedChartData } from '~/utils/stablecoins'
 import { useXl, useMed } from '~/hooks/useBreakpoints'
 import {
 	getRandomColor,
@@ -27,9 +31,16 @@ import {
 	toNiceCsvDate,
 	download
 } from '~/utils'
-import { STABLECOINS_SETTINGS, useStablecoinsManager } from '~/contexts/LocalStorage'
-
-import { Attribute, PegType, BackingType, McapRange, ResetAllStablecoinFilters } from '~/components/Filters'
+import {
+	Attribute,
+	stablecoinAttributeOptions,
+	PegType,
+	stablecoinPegTypeOptions,
+	BackingType,
+	stablecoinBackingOptions,
+	McapRange,
+	ResetAllStablecoinFilters
+} from '~/components/Filters'
 
 const PeggedAreaChart = dynamic(() => import('~/components/ECharts/AreaChart'), {
 	ssr: false
@@ -104,7 +115,8 @@ const formatPriceSource = {
 	coingecko: 'CoinGecko',
 	birdeye: 'Birdeye',
 	kucoin: 'KuCoin Exchange',
-	defillama: 'DefiLexis'
+	defillama: 'DefiLlama',
+	kaddex: 'Kaddex'
 }
 
 function pegDeviationText(pegDeviationInfo) {
@@ -394,8 +406,8 @@ function PeggedAssetsOverview({
 
 	const chartTypeList =
 		selectedChain !== 'All'
-			? ['USD Inflows', 'Total Market Cap', 'Pie', 'Dominance', 'Token Market Caps', 'Token Inflows']
-			: ['Total Market Cap', 'Pie', 'Dominance', 'Token Market Caps']
+			? ['USD Inflows', 'Total Market Cap', 'Token Market Caps', 'Token Inflows', 'Pie', 'Dominance']
+			: ['Total Market Cap', 'Token Market Caps', 'Pie', 'Dominance']
 
 	const belowMed = useMed()
 	const belowXl = useXl()
@@ -403,32 +415,47 @@ function PeggedAssetsOverview({
 
 	const [filteredIndexes, setFilteredIndexes] = useState([])
 
-	// toggles
-	const [stablecoinsSettings] = useStablecoinsManager()
+	const { query } = useRouter()
+	const { minMcap, maxMcap } = query
 
-	const router = useRouter()
-	const { minMcap, maxMcap } = router.query
+	const { selectedAttributes, selectedPegTypes, selectedBackings } = useFormatStablecoinQueryParams({
+		stablecoinAttributeOptions,
+		stablecoinPegTypeOptions,
+		stablecoinBackingOptions
+	})
 
 	const peggedAssets = useMemo(() => {
-		const { PEGGEDUSD, PEGGEDEUR, PEGGEDVAR, FIATSTABLES, CRYPTOSTABLES, ALGOSTABLES, DEPEGGED } = STABLECOINS_SETTINGS
-
 		let chartDataIndexes = []
 		const peggedAssets = filteredPeggedAssets.reduce((acc, curr) => {
 			let toFilter = false
 
-			toFilter =
-				stablecoinsSettings[DEPEGGED] || Math.abs(curr.pegDeviation) < 10 || !(typeof curr.pegDeviation === 'number')
+			// These together filter depegged. Need to refactor once any other attributes are added.
+			toFilter = Math.abs(curr.pegDeviation) < 10 || !(typeof curr.pegDeviation === 'number')
+			selectedAttributes.forEach((attribute) => {
+				const attributeOption = stablecoinAttributeOptions.find((o) => o.key === attribute)
 
-			toFilter =
-				(toFilter && stablecoinsSettings[PEGGEDUSD] && curr.pegType === 'peggedUSD') ||
-				(stablecoinsSettings[PEGGEDEUR] && curr.pegType === 'peggedEUR') ||
-				(stablecoinsSettings[PEGGEDVAR] && curr.pegType === 'peggedVAR')
+				if (attributeOption) {
+					toFilter = attributeOption.filterFn(curr)
+				}
+			})
 
 			toFilter =
 				toFilter &&
-				((stablecoinsSettings[FIATSTABLES] && curr.pegMechanism === 'fiat-backed') ||
-					(stablecoinsSettings[CRYPTOSTABLES] && curr.pegMechanism === 'crypto-backed') ||
-					(stablecoinsSettings[ALGOSTABLES] && curr.pegMechanism === 'algorithmic'))
+				selectedPegTypes
+					.map((pegtype) => {
+						const pegTypeOption = stablecoinPegTypeOptions.find((o) => o.key === pegtype)
+						return pegTypeOption ? pegTypeOption.filterFn(curr) : false
+					})
+					.some((bool) => bool)
+
+			toFilter =
+				toFilter &&
+				selectedBackings
+					.map((backing) => {
+						const backingOption = stablecoinBackingOptions.find((o) => o.key === backing)
+						return backingOption ? backingOption.filterFn(curr) : false
+					})
+					.some((bool) => bool)
 
 			const isValidMcapRange =
 				(minMcap !== undefined && !Number.isNaN(Number(minMcap))) ||
@@ -448,51 +475,27 @@ function PeggedAssetsOverview({
 		setFilteredIndexes(chartDataIndexes)
 
 		return peggedAssets
-	}, [filteredPeggedAssets, peggedNameToChartDataIndex, stablecoinsSettings, minMcap, maxMcap])
+	}, [
+		filteredPeggedAssets,
+		peggedNameToChartDataIndex,
+		minMcap,
+		maxMcap,
+		selectedAttributes,
+		selectedPegTypes,
+		selectedBackings
+	])
 
-	const [peggedAreaChartData, peggedAreaTotalData, stackedDataset, tokenInflows, tokenInflowNames, usdInflows] =
-		React.useMemo(() => {
-			const backfilledChains = [
-				'All',
-				'Ethereum',
-				'BSC',
-				'Avalanche',
-				'Arbitrum',
-				'Optimism',
-				'Fantom',
-				'Polygon',
-				'Gnosis',
-				'Celo',
-				'Harmony',
-				'Moonriver',
-				'Aztec',
-				'Loopring',
-				'Starknet',
-				'zkSync',
-				'Boba',
-				'Metis',
-				'Moonbeam',
-				'Syscoin',
-				'OKExChain',
-				'IoTeX',
-				'Heco'
-			]
-			return buildPeggedChartData(
-				chartDataByPeggedAsset,
-				peggedAssetNames,
-				filteredIndexes,
-				'mcap',
-				chainTVLData,
-				selectedChain,
-				backfilledChains
-			)
-		}, [chartDataByPeggedAsset, peggedAssetNames, filteredIndexes, chainTVLData, selectedChain])
+	const { peggedAreaChartData, peggedAreaTotalData, stackedDataset, tokenInflows, tokenInflowNames, usdInflows } =
+		useBuildPeggedChartData(
+			chartDataByPeggedAsset,
+			peggedAssetNames,
+			filteredIndexes,
+			'mcap',
+			chainTVLData,
+			selectedChain
+		)
 
-	const handleRouting = (selectedChain) => {
-		if (selectedChain === 'All') return `/stablecoins`
-		return `/stablecoins/${selectedChain}`
-	}
-	const chainOptions = ['All', ...chains].map((label) => ({ label, to: handleRouting(label) }))
+	const chainOptions = ['All', ...chains].map((label) => ({ label, to: handleRouting(label, query) }))
 
 	const peggedTotals = useCalcCirculating(peggedAssets)
 
@@ -564,18 +567,18 @@ function PeggedAssetsOverview({
 
 	const totalMcapLabel = ['Mcap', 'TVL']
 
+	const path = selectedChain === 'All' ? '/stablecoins' : `/stablecoins/${selectedChain}`
+
 	return (
 		<>
 			<PeggedSearch step={{ category: 'Stablecoins', name: title }} />
 			<ChartFilters>
 				<Dropdowns>
-					<Attribute />
-					<BackingType />
-					<PegType />
+					<Attribute pathname={path} />
+					<BackingType pathname={path} />
+					<PegType pathname={path} />
 					<McapRange />
-					<ResetAllStablecoinFilters
-						pathname={selectedChain === 'All' ? '/stablecoins' : `/stablecoins/${selectedChain}`}
-					/>
+					<ResetAllStablecoinFilters pathname={path} />
 				</Dropdowns>
 			</ChartFilters>
 
@@ -637,7 +640,7 @@ function PeggedAssetsOverview({
 					{chartType === 'Pie' && (
 						<PeggedChainResponsivePie data={chainsCirculatingValues} chainColor={chainColor} aspect={aspect} />
 					)}
-					{chartType === 'Token Inflows' && selectedChain !== 'All' && tokenInflowNames.length > 0 && (
+					{chartType === 'Token Inflows' && selectedChain !== 'All' && tokenInflows && (
 						<BarChart
 							chartData={tokenInflows}
 							title=""
@@ -648,7 +651,7 @@ function PeggedAssetsOverview({
 							chartOptions={inflowsChartOptions}
 						/>
 					)}
-					{chartType === 'USD Inflows' && selectedChain !== 'All' && tokenInflowNames.length > 0 && (
+					{chartType === 'USD Inflows' && selectedChain !== 'All' && usdInflows && (
 						<BarChart chartData={usdInflows} color={backgroundColor} title="" />
 					)}
 				</BreakpointPanel>
@@ -661,6 +664,35 @@ function PeggedAssetsOverview({
 			<PeggedTable data={peggedTotals} columns={columns} />
 		</>
 	)
+}
+
+function handleRouting(selectedChain, queryParams) {
+	const { chain, ...filters } = queryParams
+
+	let params = ''
+
+	Object.keys(filters).forEach((filter, index) => {
+		// append '?' before all query params and '&' bertween diff params
+		if (index === 0) {
+			params += '?'
+		} else params += '&'
+
+		// query params of same query like pegType will return in array form - pegType=['USD','EUR'], expected output is pegType=USD&pegType=EUR
+		if (Array.isArray(filters[filter])) {
+			filters[filter].forEach((f, i) => {
+				if (i > 0) {
+					params += '&'
+				}
+
+				params += `${filter}=${f}`
+			})
+		} else {
+			params += `${filter}=${filters[filter]}`
+		}
+	})
+
+	if (selectedChain === 'All') return `/stablecoins${params}`
+	return `/stablecoins/${selectedChain}${params}`
 }
 
 const inflowsChartOptions = {

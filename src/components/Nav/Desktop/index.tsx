@@ -18,33 +18,24 @@ export default function DesktopNav() {
 	const links = isYieldApp ? navLinks.yields : isPeggedApp ? navLinks.stablecoins : navLinks.defi
 
 	return (
-		<div className="sidebar-wrapper" data-simplebar="true">
+		<Wrapper as="aside">
 			<Link href="/" passHref>
-				<div className="sidebar-header">
-					<div>
-						<Image src={Logo} alt="DefiLexis Logo" priority />
-					</div>
-					<div>
-						<h4 className="logo-text">DefiLexis</h4>
-					</div>
-					<div className="toggle-icon ms-auto">
-						<i className="bx bx-arrow-to-left"></i>
-					</div>
-				</div>
+				<LogoWrapper>
+					<span className="visually-hidden">Navigate to Home Page</span>
+					<Image src={Logo} alt="Navigate to Home Page" priority />
+				</LogoWrapper>
 			</Link>
 
 			<AppSwitch />
 
-			<ul className="metismenu" id="menu">
-				<li>
-					{links.main
-						.filter((l) => !l.subMenuHeader)
-						.map((link) => (
-							<React.Fragment key={link.path}>
-								<Entry name={link.name} url={link.path} Icon={link.icon} newTag={link.newTag} />
-							</React.Fragment>
-						))}
-				</li>
+			<Nav>
+				{links.main
+					.filter((l) => !l.subMenuHeader)
+					.map((link) => (
+						<React.Fragment key={link.path}>
+							<Entry name={link.name} url={link.path} Icon={link.icon} newTag={link.newTag} />
+						</React.Fragment>
+					))}
 
 				<FooterWrapper>
 					{links.footer.map((link) => {
@@ -69,8 +60,8 @@ export default function DesktopNav() {
 				</FooterWrapper>
 
 				<ThemeSwitch isActive={darkMode} toggle={toggleDarkMode} />
-			</ul>
-		</div>
+			</Nav>
+		</Wrapper>
 	)
 }
 
