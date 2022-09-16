@@ -5,11 +5,12 @@ import { DexsSearch } from '~/components/Search'
 import { columnsToShow, FullTable } from '~/components/Table'
 import { revalidate } from '~/api'
 import { getChainsPageData } from '~/api/categories/protocols'
-import { BreakpointPanel, BreakpointPanels, ChartAndValuesWrapper, Panel, PanelHiddenMobile } from '~/components'
+import { BreakpointPanel, BreakpointPanels, ChartAndValuesWrapper, PanelHiddenMobile } from '~/components'
 import dynamic from 'next/dynamic'
 import { formattedNum } from '~/utils'
 import { useInView } from 'react-intersection-observer'
 import { IStackedBarChartProps } from '~/components/ECharts/BarChart/Stacked'
+import { IGetDexsResponseBody } from '~/api/categories/dexs'
 
 export async function getStaticProps() {
 	const data = await getChainsPageData('All')
@@ -109,13 +110,6 @@ const StyledTable = styled(FullTable)`
 		display: none;
 	}
 
-	// TVL
-	tr > :nth-child(6) {
-		& > * {
-			padding-right: 20px;
-		}
-	}
-
 	// MCAPTVL
 	tr > :nth-child(7) {
 		width: 100px;
@@ -199,26 +193,51 @@ const StyledTable = styled(FullTable)`
 	}
 `
 
-const columns = columnsToShow('dexName', '1dChange', '7dChange', '1mChange', 'totalVolume24h')
+const columns = columnsToShow(
+	'dexName',
+	'chainsVolume',
+	'1dChange',
+	'7dChange',
+	'1mChange',
+	'totalVolume24h',
+	'volumetvl'
+)
+
+interface IDexsContainer extends IGetDexsResponseBody {
+	tvlData: { [name: string]: number }
+}
 
 export default function DexsContainer({
-	category,
-	dexs = [],
-	totalVolume = {},
-	changeVolume1d = {},
-	changeVolume30d = {},
-	totalDataChart = []
-}) {
+	tvlData,
+	dexs,
+	totalVolume,
+	changeVolume1d,
+	changeVolume30d,
+	totalDataChart
+}: IDexsContainer) {
+	const dexWithSubrows = React.useMemo(() => {
+		return dexs.map((dex) => {
+			return {
+				...dex,
+				volumetvl: dex.totalVolume24h / tvlData[dex.name],
+				subRows: dex.protocolVersions
+					? Object.entries(dex.protocolVersions)
+							.map(([versionName, summary]) => ({
+								...dex,
+								name: `${dex.name} - ${versionName.toUpperCase()}`,
+								...summary
+							}))
+							.sort((first, second) => 0 - (first.totalVolume24h > second.totalVolume24h ? 1 : -1))
+					: null
+			}
+		})
+	}, [dexs, tvlData])
 	return (
 		<>
-			<Panel as="p" style={{ textAlign: 'center', margin: 0 }}>
-				Dashboard under developement, data might be incorrect.
-			</Panel>
-
 			<DexsSearch
 				step={{
 					category: 'DEXs',
-					name: category === 'All' ? 'All DEXs' : category
+					name: 'All DEXs'
 				}}
 			/>
 			<HeaderWrapper>
@@ -227,7 +246,7 @@ export default function DexsContainer({
 			<ChartAndValuesWrapper>
 				<BreakpointPanels>
 					<BreakpointPanel>
-						<h1>Total dexs volume (USD)</h1>
+						<h1>Total 24h DEX volume (USD)</h1>
 						<p style={{ '--tile-text-color': '#4f8fea' } as React.CSSProperties}>{formattedNum(totalVolume, true)}</p>
 					</BreakpointPanel>
 					<PanelHiddenMobile>
@@ -246,7 +265,7 @@ export default function DexsContainer({
 								chartData={[
 									{
 										name: 'All DEXs',
-										data: totalDataChart.map(([date, value]) => [new Date(date * 1000), value])
+										data: totalDataChart.map(([date, value]) => [new Date(+date * 1000), value])
 									}
 								]}
 							/>
@@ -255,7 +274,7 @@ export default function DexsContainer({
 				</BreakpointPanel>
 			</ChartAndValuesWrapper>
 			{dexs && dexs.length > 0 ? (
-				<StyledTable data={dexs} columns={columns} columnToSort={'totalVolume24h'} sortDirection={1} />
+				<StyledTable data={dexWithSubrows} columns={columns} columnToSort={'totalVolume24h'} sortDirection={1} />
 			) : (
 				'Unexpected response'
 			)}

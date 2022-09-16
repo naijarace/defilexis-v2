@@ -6,6 +6,18 @@ import { transparentize } from 'polished'
 import { ArrowUpRight, DownloadCloud } from 'react-feather'
 import styled from 'styled-components'
 import Layout from '~/layout'
+import {
+	Button,
+	DetailsTable,
+	DownloadButton,
+	ExtraOption,
+	FlexRow,
+	DetailsWrapper,
+	Name,
+	Symbol
+} from '~/layout/ProtocolAndPool'
+import { Stat, StatsSection, StatWrapper } from '~/layout/Stats/Medium'
+import { Checkbox2 } from '~/components'
 import { CustomLink } from '~/components/Link'
 import { PeggedSearch } from '~/components/Search'
 import { OptionButton } from '~/components/ButtonStyled'
@@ -18,21 +30,9 @@ import AuditInfo from '~/components/AuditInfo'
 import { columnsToShow, FullTable } from '~/components/Table'
 import SEO from '~/components/SEO'
 import QuestionHelper from '~/components/QuestionHelper'
-import {
-	Button,
-	DetailsTable,
-	DownloadButton,
-	ExtraOption,
-	FlexRow,
-	DetailsWrapper,
-	Name,
-	Stat,
-	StatsSection,
-	StatWrapper,
-	Symbol
-} from '~/components/ProtocolAndPool'
-import { useCalcGroupExtraPeggedByDay, useCalcCirculating, useGroupBridgeData } from '~/hooks/data'
-import { buildPeggedChartData } from '~/utils/stablecoins'
+
+import { useCalcGroupExtraPeggedByDay, useCalcCirculating, useGroupBridgeData } from '~/hooks/data/stablecoins'
+import { useBuildPeggedChartData } from '~/utils/stablecoins'
 import { useXl, useMed } from '~/hooks/useBreakpoints'
 import { UNRELEASED, useStablecoinsManager } from '~/contexts/LocalStorage'
 import {
@@ -48,7 +48,6 @@ import {
 	formattedPeggedPrice
 } from '~/utils'
 import type { IChartProps } from '~/components/ECharts/types'
-import { Checkbox2 } from '~/components'
 
 const TokenAreaChart = dynamic(() => import('~/components/ECharts/AreaChart'), {
 	ssr: false
@@ -405,11 +404,16 @@ export default function PeggedContainer({
 		return peggedAssetData.chainBalances[elem].tokens
 	})
 
-	const [peggedAreaChartData, peggedAreaTotalData, stackedDataset] = buildPeggedChartData(
+	const totalChartTooltipLabel = ['Circulating']
+
+	const { peggedAreaChartData, peggedAreaTotalData, stackedDataset } = useBuildPeggedChartData(
 		chainsData,
 		chainsUnique,
 		[...Array(chainsUnique.length).keys()],
-		'circulating'
+		'circulating',
+		undefined,
+		undefined,
+		totalChartTooltipLabel[0]
 	)
 
 	const extraPeggeds = [UNRELEASED]
@@ -458,11 +462,9 @@ export default function PeggedContainer({
 		download('stablecoinsChains.csv', rows.map((r) => r.join(',')).join('\n'))
 	}
 
-	const totalMcapLabel = ['Mcap']
-
 	return (
 		<Layout
-			title={`${name}: Circulating and stats - DefiLexis`}
+			title={`${name}: Circulating and stats - DefiLlama`}
 			backgroundColor={transparentize(0.6, backgroundColor)}
 			style={{ gap: '48px' }}
 		>
@@ -709,7 +711,7 @@ export default function PeggedContainer({
 							<FlexRow>
 								<>
 									<Link
-										href={`https://github.com/DefiLexis/peggedassets-server/tree/master/src/adapters/peggedAssets/${gecko_id}`}
+										href={`https://github.com/DefiLlama/peggedassets-server/tree/master/src/adapters/peggedAssets/${gecko_id}`}
 										passHref
 									>
 										<AlignSelfButton
@@ -742,7 +744,7 @@ export default function PeggedContainer({
 					<RowBetween my={useMed ? 20 : 0} mx={useMed ? 10 : 0} align="flex-start">
 						<AutoRow style={{ width: 'fit-content' }} justify="flex-end" gap="6px" align="flex-start">
 							<OptionButton active={chartType === 'Mcap'} onClick={() => setChartType('Mcap')}>
-								Total Mcap
+								Total Circ
 							</OptionButton>
 							<OptionButton active={chartType === 'Pie'} onClick={() => setChartType('Pie')}>
 								Pie
@@ -751,7 +753,7 @@ export default function PeggedContainer({
 								Dominance
 							</OptionButton>
 							<OptionButton active={chartType === 'Chain Mcaps'} onClick={() => setChartType('Chain Mcaps')}>
-								Chain Mcaps
+								Area
 							</OptionButton>
 						</AutoRow>
 					</RowBetween>
@@ -759,7 +761,7 @@ export default function PeggedContainer({
 						<TokenAreaChart
 							title={`Total ${symbol} Circulating`}
 							chartData={peggedAreaTotalData}
-							stacks={totalMcapLabel}
+							stacks={totalChartTooltipLabel}
 							color={backgroundColor}
 							hidedefaultlegend={true}
 						/>

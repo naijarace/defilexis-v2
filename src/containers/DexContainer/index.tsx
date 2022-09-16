@@ -272,7 +272,7 @@ function ProtocolContainer({ title, dexData, backgroundColor }: IProtocolContain
 		<Layout title={title} backgroundColor={transparentize(0.6, backgroundColor)} style={{ gap: '36px' }}>
 			<SEO
 				cardName={dexData.name}
-				chain={dexData.name}
+				token={dexData.name}
 				tvl={formattedNum(dexData.total1dVolume)?.toString()}
 				volumeChange={`${dexData.change1dVolume}`}
 			/>
@@ -397,7 +397,7 @@ function ProtocolContainer({ title, dexData, backgroundColor }: IProtocolContain
 					<LinksWrapper>
 						{volumeAdapter && (
 							<Link
-								href={`https://github.com/DefiLexis/DefiLexis-Adapters/tree/main/dexVolumes/${volumeAdapter}`}
+								href={`https://github.com/DefiLlama/DefiLlama-Adapters/tree/main/volumes/adapters/${volumeAdapter}`}
 								passHref
 							>
 								<Button as="a" target="_blank" rel="noopener noreferrer" useTextColor={true} color={backgroundColor}>
