@@ -61,7 +61,7 @@ export default function UsersByChain({ chart, backgroundColor, name, chains, cha
 
 	return (
 		<Layout
-			title={`${name ? name + ': ' : ''}User Metrics - DefiLexis`}
+			title={`${name ? name + ': ' : ''}User Metrics - DefiLlama`}
 			defaultSEO
 			backgroundColor={backgroundColor && transparentize(0.6, backgroundColor)}
 			style={{ gap: '36px' }}
