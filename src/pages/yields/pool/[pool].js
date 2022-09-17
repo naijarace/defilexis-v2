@@ -282,7 +282,7 @@ const stackedBarChartColors = {
 
 export default function YieldPoolPage(props) {
 	return (
-		<Layout title={`Yield Chart - DefiLexis`} defaultSEO>
+		<Layout title={`Yield Chart - DefiLlama`} defaultSEO>
 			<PageView {...props} />
 		</Layout>
 	)

@@ -73,7 +73,7 @@ const PanelWrapper = styled(Box)`
 
 function PressPage() {
 	return (
-		<Layout title="Press - DefiLexis" defaultSEO>
+		<Layout title="Press - DefiLlama" defaultSEO>
 			<RowBetween>
 				<TYPE.largeHeader>Press & Media</TYPE.largeHeader>
 			</RowBetween>
@@ -82,7 +82,7 @@ function PressPage() {
 					<TYPE.heading>Mission</TYPE.heading>
 					<Divider />
 					<TYPE.main>
-						DefiLexis is the largest TVL aggregator for DeFi (Decentralized Finance). Our data is fully open-source and
+						DefiLlama is the largest TVL aggregator for DeFi (Decentralized Finance). Our data is fully open-source and
 						maintained by a team of passionate individuals and contributors from hundreds of protocols.
 					</TYPE.main>
 					<TYPE.main>Our focus is on accurate data and transparent methodology.</TYPE.main>

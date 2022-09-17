@@ -23,5 +23,5 @@ export async function getStaticProps() {
 }
 
 export default function Protocols({ protocolsMcapTvl }) {
-	return <ComparisonContainer title="Protocol Price Comparison - DefiLexis" protocolsMcapTvl={protocolsMcapTvl} />
+	return <ComparisonContainer title="Protocol Price Comparison - DefiLlama" protocolsMcapTvl={protocolsMcapTvl} />
 }

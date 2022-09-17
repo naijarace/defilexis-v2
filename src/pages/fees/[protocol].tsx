@@ -56,7 +56,7 @@ export async function getStaticPaths() {
 }
 
 export default function FeeProtocol({ data, chartData }: InferGetStaticPropsType<typeof getStaticProps>) {
-	return <Layout title={`${data.name} Fees - DefiLexis`} style={{ gap: '36px' }}>
+	return <Layout title={`${data.name} Fees - DefiLlama`} style={{ gap: '36px' }}>
   		<Stats>
 			<ProtocolDetails style={{ borderTopLeftRadius: '12px' }}>
 				<ProtocolName>

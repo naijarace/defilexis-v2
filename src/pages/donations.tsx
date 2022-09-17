@@ -33,14 +33,14 @@ export async function getStaticProps() {
 
 function PressPage({protocols}) {
 	return (
-		<Layout title="Donations - DefiLexis" defaultSEO>
+		<Layout title="Donations - DefiLlama" defaultSEO>
 			<RowBetween>
 				<TYPE.largeHeader>Donations</TYPE.largeHeader>
 			</RowBetween>
 			<Panel style={{ marginTop: '6px' }}>
 				<DashGrid style={{ height: 'fit-content', padding: '0 0 1rem 0' }}>
 					<Section title="Why donate?">
-						DefiLexis is an open-source project that runs no ads and provides all data for free. We have no revenue and are supported by donations.
+						DefiLlama is an open-source project that runs no ads and provides all data for free. We have no revenue and are supported by donations.
 					</Section>
 
 					<Divider />
@@ -48,12 +48,12 @@ function PressPage({protocols}) {
 					<Section title="Gitcoin">
 					Donations on gitcoin get matched with donations from a quadratic funding pool, so a small 1$ donation can get heavily amplified.
 					<br /><br />
-					DefiLexis has the following grants:
+					DefiLlama has the following grants:
 					<ul>
 					{[
 						["LlamaPay (preferred)", "https://gitcoin.co/grants/7077/llamapay"],
-						["DefiLexis", "https://gitcoin.co/grants/3591/defillama"],
-						["DefiLexis APIs", "https://gitcoin.co/grants/7087/defillama-apis"],
+						["DefiLlama", "https://gitcoin.co/grants/3591/defillama"],
+						["DefiLlama APIs", "https://gitcoin.co/grants/7087/defillama-apis"],
 					].map(el=><li key={el[0]}><Link href={el[1]} external>{el[0]}</Link></li>)}
 					</ul>
 					</Section>
@@ -61,7 +61,7 @@ function PressPage({protocols}) {
 					<Divider />
 
 					<Section title="Affiliate links" >
-					DefiLexis has referral links for all these protocols, using them with our referral sends us some rewards:
+					DefiLlama has referral links for all these protocols, using them with our referral sends us some rewards:
 					<ul>
 					{protocols.map(p=><li key={p.name}><Link href={p.url} external>{p.name}</Link></li>)}
 					</ul>
@@ -78,7 +78,7 @@ function PressPage({protocols}) {
 					<Section title="Use of funds" >
 					Funds are only used for 2 purposes:
 					<ul>
-						<li>Pay the llamas working on DefiLexis</li>
+						<li>Pay the llamas working on DefiLlama</li>
 						<li>Cover costs associated with running defillama (this is mostly server costs)</li>
 					</ul>
 					</Section>

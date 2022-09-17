@@ -110,7 +110,7 @@ export default function Protocol({ name, logo, backgroundColor, data, uniqueChai
 
 	return (
 		<Layout
-			title={`${name}: User Metrics - DefiLexis`}
+			title={`${name}: User Metrics - DefiLlama`}
 			defaultSEO
 			backgroundColor={transparentize(0.6, backgroundColor)}
 			style={{ gap: '36px' }}

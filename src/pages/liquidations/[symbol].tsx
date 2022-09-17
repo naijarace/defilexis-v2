@@ -93,7 +93,7 @@ const LiquidationsHomePage: NextPage<{ data: ChartData; prevData: ChartData; opt
 	}, [])
 
 	return (
-		<Layout title={`${data.name} (${data.symbol}) Liquidation Levels - DefiLexis`}>
+		<Layout title={`${data.name} (${data.symbol}) Liquidation Levels - DefiLlama`}>
 			<SEO
 				liqsPage
 				cardName={`${data.name} (${data.symbol})`}

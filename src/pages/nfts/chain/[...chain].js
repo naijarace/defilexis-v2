@@ -43,5 +43,5 @@ export async function getStaticPaths() {
 }
 
 export default function Chain({ displayName, ...props }) {
-	return <NFTDashboardPage title={`${displayName} Total Volume - DefiLexis`} displayName={displayName} {...props} />
+	return <NFTDashboardPage title={`${displayName} Total Volume - DefiLlama`} displayName={displayName} {...props} />
 }

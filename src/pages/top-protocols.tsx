@@ -122,7 +122,7 @@ export default function Chains({ data, columns }) {
 	)
 
 	return (
-		<Layout title="TVL Rankings - DefiLexis" defaultSEO>
+		<Layout title="TVL Rankings - DefiLlama" defaultSEO>
 			<TableWrapper>
 				<TYPE.largeHeader>Top Protocols</TYPE.largeHeader>
 				<FullTable data={data} columns={allColumns} align="start" gap="12px" style={{ height: '85vh' }} />

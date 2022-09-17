@@ -21,7 +21,7 @@ export default function YieldPlots(compressedProps) {
 	const b = new Uint8Array(Buffer.from(compressedProps.compressed, 'base64'))
 	const data = JSON.parse(pako.inflate(b, { to: 'string' }))
 	return (
-		<Layout title={`Stablecoins - DefiLexis Yield`} defaultSEO>
+		<Layout title={`Stablecoins - DefiLlama Yield`} defaultSEO>
 			<YieldPage {...data.props} />
 		</Layout>
 	)
