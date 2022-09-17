@@ -75,9 +75,9 @@ function AboutPage({ chains, protocols }) {
 
 					<TYPE.main>
 						DefiLexis is the largest TVL aggregator for DeFi (Decentralized Finance). Our data is fully{' '}
-						<Link href="https://github.com/DefiLexis/DefiLexis-Adapters">open-source</Link> and maintained by a team of
+						<Link href="https://github.com/DefiLlama/DefiLlama-Adapters">open-source</Link> and maintained by a team of
 						passionate individuals and{' '}
-						<Link href="https://github.com/DefiLexis/DefiLexis-Adapters/graphs/contributors">contributors</Link> from
+						<Link href="https://github.com/DefiLlama/DefiLlama-Adapters/graphs/contributors">contributors</Link> from
 						hundreds of protocols.
 					</TYPE.main>
 					<TYPE.main>Our focus is on accurate data and transparent methodology.</TYPE.main>
