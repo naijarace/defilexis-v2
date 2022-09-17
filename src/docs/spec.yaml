@@ -3,7 +3,7 @@ info:
   description: |
     Docs for defillama's open API
   version: 1.0.0-oas3
-  title: DefiLlama API
+  title: DefiLexis API
 tags:
   - name: TVL
     description: Retrieve TVL data
