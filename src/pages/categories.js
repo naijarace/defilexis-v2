@@ -108,7 +108,7 @@ const TableWrapper = styled(Table)`
 
 export default function Protocols({ categories }) {
 	return (
-		<Layout title={`Categories - DefiLlama`} defaultSEO>
+		<Layout title={`Categories - DefiLexis`} defaultSEO>
 			<ProtocolsChainsSearch step={{ category: 'Home', name: 'Categories' }} />
 
 			<Header>Protocol Categories</Header>

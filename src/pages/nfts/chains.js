@@ -103,7 +103,7 @@ const ChainsView = ({ chainData, currentData, chainsUnique, stackedDataset, dayS
 
 function Chains(props) {
 	return (
-		<Layout title="DefiLlama - NFT Dashboard">
+		<Layout title="DefiLexis - NFT Dashboard">
 			<SEO nftPage />
 			<ChainsView {...props} />
 		</Layout>

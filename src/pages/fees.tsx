@@ -67,7 +67,7 @@ const columns = columnsToShow(
 
 export default function Fees(props) {
 	return (
-    	<Layout title={"Fees - DefiLlama"} defaultSEO>
+    	<Layout title={"Fees - DefiLexis"} defaultSEO>
 			<Table data={props.fees} columns={columns} />
 		</Layout>
 	)

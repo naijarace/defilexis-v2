@@ -73,7 +73,7 @@ export default function Chains({ messages }: { messages?: string }) {
 		''
 
 	return (
-		<Layout title={`Daily Roundup - DefiLlama`} defaultSEO>
+		<Layout title={`Daily Roundup - DefiLexis`} defaultSEO>
 			<Banner>
 				Get the roundup delivered every day for free by subscribing on{' '}
 				<Link href="https://t.me/defillama_tg" passHref>

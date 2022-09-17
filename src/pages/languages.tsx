@@ -72,7 +72,7 @@ export default function Protocols({ langs, langsUnique, langsDaySum, osUnique, o
 		colors[l] = getRandomColor()
 	})
 	return (
-		<Layout title={`Languages - DefiLlama`} defaultSEO>
+		<Layout title={`Languages - DefiLexis`} defaultSEO>
 			<ProtocolsChainsSearch step={{ category: 'Home', name: 'Languages', hideOptions: true }} />
 
 			<Header>TVL breakdown by Smart Contract Language</Header>

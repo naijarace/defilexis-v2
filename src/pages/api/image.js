@@ -1,7 +1,7 @@
 /* 
 TODO: This is a quick fix for images from external domains.
 It should not be used long-term and images should still be 
-retrieved from a known DefiLlama domain.
+retrieved from a known DefiLexis domain.
 https://www.akmittal.dev/posts/nextjs-image-use-any-domain/
 */
 

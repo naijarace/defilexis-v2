@@ -34,7 +34,7 @@ export default function TopGainersLosers({ protocols }) {
 	}, [data])
 
 	return (
-		<Layout title={`Top Gainers and Losers - DefiLlama`} defaultSEO>
+		<Layout title={`Top Gainers and Losers - DefiLexis`} defaultSEO>
 			<Header>Top Gainers</Header>
 			<Table data={topGainers} columns={columns} />
 
