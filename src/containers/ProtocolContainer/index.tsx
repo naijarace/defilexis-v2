@@ -431,7 +431,7 @@ function ProtocolContainer({ title, protocolData, protocol, backgroundColor }: I
 					{methodology && <p>{methodology}</p>}
 					<LinksWrapper>
 						{codeModule && (
-							<Link href={`https://github.com/DefiLlama/DefiLlama-Adapters/tree/main/projects/${codeModule}`} passHref>
+							<Link href={`https://github.com/DefiLexis/DefiLexis-Adapters/tree/main/projects/${codeModule}`} passHref>
 								<Button as="a" target="_blank" rel="noopener noreferrer" useTextColor={true} color={backgroundColor}>
 									<span>Check the code</span>
 									<ArrowUpRight size={14} />

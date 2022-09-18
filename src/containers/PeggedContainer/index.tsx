@@ -464,7 +464,7 @@ export default function PeggedContainer({
 
 	return (
 		<Layout
-			title={`${name}: Circulating and stats - DefiLlama`}
+			title={`${name}: Circulating and stats - DefiLexis`}
 			backgroundColor={transparentize(0.6, backgroundColor)}
 			style={{ gap: '48px' }}
 		>
@@ -711,7 +711,7 @@ export default function PeggedContainer({
 							<FlexRow>
 								<>
 									<Link
-										href={`https://github.com/DefiLlama/peggedassets-server/tree/master/src/adapters/peggedAssets/${gecko_id}`}
+										href={`https://github.com/DefiLexis/peggedassets-server/tree/master/src/adapters/peggedAssets/${gecko_id}`}
 										passHref
 									>
 										<AlignSelfButton
