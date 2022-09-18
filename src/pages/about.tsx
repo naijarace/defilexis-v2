@@ -84,8 +84,7 @@ function AboutPage({ chains, protocols }) {
 					<TYPE.main>We track over 1750 DeFi protocols from over 130 different blockchains.</TYPE.main>
 					<Divider />
 					<TYPE.main>
-						Contact us on <Link href="https://twitter.com/defillama">Twitter</Link> or{' '}
-						<Link href="https://discord.gg/buPFYXzDDd">Discord</Link>
+						Contact us on <Link href="https://twitter.com/defilexis">Twitter</Link> or{' '}
 					</TYPE.main>
 				</DashGrid>
 			</Panel>
@@ -98,7 +97,7 @@ function AboutPage({ chains, protocols }) {
 					</TYPE.main>
 					<Divider />
 					<TYPE.main>
-						DeFiLlama&apos;s design is based on <Link href="https://github.com/Uniswap/uniswap-info">Uniswap.info</Link>
+						DeFiLexis&apos;s design is based on <Link href="https://github.com/Uniswap/uniswap-info">Uniswap.info</Link>
 					</TYPE.main>
 				</DashGrid>
 			</Panel>
