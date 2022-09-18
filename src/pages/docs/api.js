@@ -12,7 +12,7 @@ export default function ApiDocs() {
 	const Wrapper = isDark ? DarkSwagger : styled.div``
 
 	return (
-		<Layout title={`API Docs - DefiLlama`}>
+		<Layout title={`API Docs - DefiLexis`}>
 			<HideSections>
 				<Wrapper>
 					<Swagger />

@@ -50,7 +50,7 @@ const Metrics = styled.table`
 
 function AboutPage({ chains, protocols }) {
 	return (
-		<Layout title="DefiLlama - DeFi Dashboard" defaultSEO>
+		<Layout title="DefiLexis - DeFi Dashboard" defaultSEO>
 			<RowBetween>
 				<TYPE.largeHeader>About</TYPE.largeHeader>
 			</RowBetween>
@@ -74,7 +74,7 @@ function AboutPage({ chains, protocols }) {
 					<Divider />
 
 					<TYPE.main>
-						DefiLlama is the largest TVL aggregator for DeFi (Decentralized Finance). Our data is fully{' '}
+						DefiLexis is the largest TVL aggregator for DeFi (Decentralized Finance). Our data is fully{' '}
 						<Link href="https://github.com/DefiLlama/DefiLlama-Adapters">open-source</Link> and maintained by a team of
 						passionate individuals and{' '}
 						<Link href="https://github.com/DefiLlama/DefiLlama-Adapters/graphs/contributors">contributors</Link> from

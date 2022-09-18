@@ -56,7 +56,7 @@ export async function getStaticPaths() {
 export default function Protocols({ protocolData, ...props }: InferGetStaticPropsType<typeof getStaticProps>) {
 	return (
 		<ProtocolContainer
-			title={`${protocolData.name}: TVL and Stats - DefiLlama`}
+			title={`${protocolData.name}: TVL and Stats - DefiLexis`}
 			protocolData={protocolData}
 			{...props}
 		/>

@@ -22,7 +22,7 @@ export async function getStaticProps() {
 
 const Chains: React.FC<any> = (props) => {
 	return (
-		<Layout title={'All DEX volumes - DefiLlama'} defaultSEO>
+		<Layout title={'All DEX volumes - DefiLexis'} defaultSEO>
 			<DexsContainer {...props} />
 		</Layout>
 	)

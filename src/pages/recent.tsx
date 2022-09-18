@@ -29,6 +29,6 @@ export async function getStaticProps() {
 
 export default function Protocols(props) {
 	return (
-		<RecentProtocols title="TVL Rankings - DefiLlama" name="Recent" header="Recently Listed Protocols" {...props} />
+		<RecentProtocols title="TVL Rankings - DefiLexis" name="Recent" header="Recently Listed Protocols" {...props} />
 	)
 }
