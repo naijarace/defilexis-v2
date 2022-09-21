@@ -19,7 +19,7 @@ function App({ Component, pageProps }) {
         <title>Next.js</title>
       </Head>
       <Script
-        src="https://www.googletagmanager.com/gtag/js?id=UA-55586655-1"
+        src="https://www.googletagmanager.com/gtag/js?id=G-PMG9VZF57Q"
         strategy="afterInteractive"
       />
       <Script id="google-analytics" strategy="afterInteractive">
@@ -28,7 +28,7 @@ function App({ Component, pageProps }) {
           function gtag(){window.dataLayer.push(arguments);}
           gtag('js', new Date());
 
-          gtag('config', 'UA-55586655-1');
+          gtag('config', 'G-PMG9VZF57Q');
         `}
       </Script>
 	
